@@ -4,15 +4,25 @@ const userTextInput = document.querySelector(".letter"); //text input where the 
 const wordInProgress = document.querySelector(".word-in-progress");//empty paragraph where the WIP will appear
 const userRemainingGuess = document.querySelector(".remaining");//paragraph where the remaining guess will display
 const spanRemaining = document.querySelector(".remaining span");//span inside the paragraph 
-const userMessages = docuement.querySelector(".message")//empty paragraph where messages will appear
+const userMessages = document.querySelector(".message")//empty paragraph where messages will appear
 const hiddenButton = document.querySelector(".play-again hide");//hidden button that prompts player to paly again 
 const word = "magnolia";//starting word for test until I fetch hosted files
 
 //write a function to add placeholders for each letter 
-const placeholders = function () { //this function contains the logice to create & update placeholder symbol
+const placeholders = function (word) { //this function contains the logic to create & update placeholder symbol
     const placeholders = [];//this line creates an empty array that stores circe symbol 
-    for (const letter of userRemainingGuess) { //this line iterates over each character in the userRemaining guess variable 
-        placeholdersLetter.push("●");//this line pushes a symbol into the array for each letter 
+    for (const letter of word) { //this line iterates over each character in the word guess variable 
+        console.log(letter);
+        placeholders.push("●");//this line pushes a symbol into the array for each letter 
     }
-    wordInProgress.innerText = placeholdersLetter.join("");//this line update the innerText property of the WIP element 
+    wordInProgress.innerText = placeholders.join("");//this line update the innerText property of the WIP element 
 }
+
+placeholders(word);
+
+guestButton.addEventListener("click", function (e) {
+    e.preventDefault(); //this prevent the page from reloading 
+    const captureInputValue = userTextInput.value;
+    console.log(captureInputValue);
+    userTextInput.value = "";
+});
