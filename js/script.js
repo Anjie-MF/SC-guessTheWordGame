@@ -8,6 +8,7 @@ const userMessages = document.querySelector(".message")//empty paragraph where m
 const hiddenButton = document.querySelector(".play-again hide");//hidden button that prompts player to paly again 
 const word = "magnolia";//starting word for test until I fetch hosted files
 
+
 //write a function to add placeholders for each letter 
 const placeholders = function (word) { //this function contains the logic to create & update placeholder symbol
     const placeholders = [];//this line creates an empty array that stores circe symbol 
@@ -17,12 +18,28 @@ const placeholders = function (word) { //this function contains the logic to cre
     }
     wordInProgress.innerText = placeholders.join("");//this line update the innerText property of the WIP element 
 }
-
 placeholders(word);
 
-guestButton.addEventListener("click", function (e) {
+
+//Add an Event Listener for the button 
+guestButton.addEventListener("click", function (e) { //this line captures the value of the input
     e.preventDefault(); //this prevent the page from reloading 
     const captureInputValue = userTextInput.value;
     console.log(captureInputValue);
-    userTextInput.value = "";
+    userTextInput.value = ""; //this line accesses the element and clears the input field 
 });
+
+
+//Create a function to check player's input
+const acceptParameter = function (input) {
+    const acceptedLetter = /[a-zA-Z]/;
+    if (input.length === 0) {
+        userMessages.innerText = "You gotta try, silly!";
+    } else if (input.length > 1) {
+        userMessages.innerText = "One letter at time, please & thank you!";
+    } else if (!input.match(acceptedLetter)) {
+        userMessages.innerText = "Nice try, but letters only";
+    } else {
+        return input;
+    }
+};
