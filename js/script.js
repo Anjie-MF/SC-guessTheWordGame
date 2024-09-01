@@ -11,5 +11,20 @@ const word = "magnolia";
 
 //Write a function to add placeholders for each letter
 const placeholder = function (word) {
-    wordInProgress.innerText = "●";
+    const placeholderSymbol = [];
+    for (const letter of word) {
+        placeholderSymbol.push("●");
+        console.log(letter);
+    }
+    wordInProgress.innerText = placeholderSymbol.join("");
 };
+
+placeholder(word);
+
+//Add an Event Listener for the Button
+guessButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    const captureInput = guessInput.value;
+    console.log(captureInput);
+    guessInput.value = "";
+})
