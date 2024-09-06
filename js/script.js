@@ -10,21 +10,47 @@ const word = "magnolia";
 
 
 //Write a function to add placeholders for each letter
-const placeholder = function (word) {
+const createPlaceholder = function (word) {
     const placeholderSymbol = [];
+
     for (const letter of word) {
-        placeholderSymbol.push("●");
         console.log(letter);
+        placeholderSymbol.push("●");
     }
     wordInProgress.innerText = placeholderSymbol.join("");
 };
 
-placeholder(word);
+createPlaceholder(word);
 
 //Add an Event Listener for the Button
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
-    const captureInput = guessInput.value;
+    message.innerText = ""; //empties message paragraph
+
+    const captureInput = guessInput.value; //grabs what was entered in the input
     console.log(captureInput);
+
+    //Validate input in the button event handler
+    const validationResult = validateUserInput(captureInput);
+    console.log(validationResult);
+
+    if (validationResult) {
+        makeGuess(validationResult);
+    }
     guessInput.value = "";
-})
+});
+
+
+//Create a function to check player's input
+const validateUserInput = function (guessInput) {
+    const acceptedLetter = /[a-zA-Z]/;
+    if (guessInput === "") {
+        message.innerText = "Please input a character.";
+    } else if (guessInput.length > 1) {
+        message.innerText = "Please enter only one letter at a time.";
+    } else if (!guessInput.match(acceptedLetter)) {
+        message.innerText = "Please enter alphabetical letters only.";
+    } else {
+        return guessInput;
+    }
+};
