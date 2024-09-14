@@ -1,4 +1,4 @@
-const guessedLetters = document.querySelector(".guessed-letters"); //ul list of user guessed letters
+const guessedLettersElement = document.querySelector(".guessed-letters"); //ul list of user guessed letters
 const guessButton = document.querySelector(".guess"); //guess button 
 const guessInput = document.querySelector(".letter"); //text input for letters
 const wordInProgress = document.querySelector(".word-in-progress"); //empty paragraph for WIP
@@ -6,7 +6,9 @@ const remaining = document.querySelector(".remaining"); //paragraph of remaining
 const span = document.querySelector(".remaining span"); //span inside paragraph 
 const message = document.querySelector(".message"); //empty paragraph when user guesses a letter
 const playAgainButton = document.querySelector(".play-again"); //play again button 
+
 const word = "magnolia";
+const guessedLetters = [];
 
 
 //Write a function to add placeholders for each letter
@@ -52,5 +54,16 @@ const validateUserInput = function (guessInput) {
         message.innerText = "Please enter alphabetical letters only.";
     } else {
         return guessInput;
+    }
+};
+
+//Create a function to capture input
+const makeGuess = function (validationResult) {
+    validationResult = validationResult.toUpperCase();
+    if (guessedLetters.includes(validationResult)) { //check if the letter has aleady been guessed
+        message.innerText = "You've already guessed that letter. Try again."; //inform player they already guessed
+    } else {
+        guessedLetters.push(validationResult); //add the new guessed letter to the guessedLetters array
+        console.log(guessedLetters);
     }
 };
