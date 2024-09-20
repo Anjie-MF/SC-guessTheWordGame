@@ -78,3 +78,18 @@ const updatePageWithUserGuesses = function () { //update the list of guessed let
         guessedLettersElement.append(li); //adds the new li element to the ul element which displays all the guessed letters 
     }
 };
+
+//create a function to update the word in progress
+const replaceCircleSymbols = function (guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const revealWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+        } else {
+            revealWord.push("●");
+        }
+    }
+    console.log(revealWord);
+}
