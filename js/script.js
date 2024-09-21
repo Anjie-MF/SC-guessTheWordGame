@@ -30,11 +30,8 @@ guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAY
     message.innerText = ""; //empties message paragraph
 
     const captureInput = guessInput.value; // aka PLAYER hands over their guess to be inspected
-    console.log(captureInput);
 
-    //Validate input in the button event handler
     const validationResult = validateUserInput(captureInput); //aka <validateUserInput>CARD INSPECTOR checks it to ensure its valid
-    console.log(validationResult);
 
     if (validationResult) { //CRUCIAL PART OF GAME--<makeGuess> THE DEALER if the guess is valid, steps in and decides whether to reveal the card or not
         makeGuess(validationResult);
@@ -46,7 +43,7 @@ guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAY
 //Create a function to check player's input--->THIS FUNCTION is like the CARD INSPECTOR at the start of the game; checks whether the users guess is valid before the <makeGuess>THE DEALER even looks at it
 const validateUserInput = function (guessInput) {
     const acceptedLetter = /[a-zA-Z]/;
-    if (guessInput === "") {
+    if (guessInput.length === 0) {
         message.innerText = "Please input a character."; //aka "Hey, you needs to play a card!"
     } else if (guessInput.length > 1) {
         message.innerText = "Please enter only one letter at a time."; //aka "You can only play one card at a time!"
@@ -65,7 +62,8 @@ const makeGuess = function (validationResult) {
     } else {
         guessedLetters.push(validationResult); //add the new guessed letter to the guessedLetters array
         console.log(guessedLetters);
-        updatePageWithUserGuesses(guessedLetters); //THIS IS WHY ITS CALLED HERERE; the dealer decides the guess is valid, the game updates the dispaly with letters guess so far
+        updatePageWithUserGuesses(); //THIS IS WHY ITS CALLED HERE; the dealer decides the guess is valid, the game updates the display with letters guess so far;
+        replaceCircleSymbols(guessedLetters);
     }
 };
 
@@ -79,7 +77,7 @@ const updatePageWithUserGuesses = function () { //update the list of guessed let
     }
 };
 
-//create a function to update the word in progress
+//create a function to update the word in progress ---> THIS FUNCTION is the deck of cards; 
 const replaceCircleSymbols = function (guessedLetters) {
     const wordUpper = word.toUpperCase();
     const wordArray = wordUpper.split("");
@@ -91,5 +89,16 @@ const replaceCircleSymbols = function (guessedLetters) {
             revealWord.push("●");
         }
     }
-    console.log(revealWord);
+    // console.log(revealWord);
+    wordInProgress.innerText = revealWord.join("");
+    checkIfUserWon();
 }
+
+//create a function to check if the player won
+const checkIfUserWon = function () {
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        //(wordInProgress === validateUserInput) { //THIS IS WORNG B/C ---its comparing references not values aka 
+        message.classList.add("win");
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+    }
+};
