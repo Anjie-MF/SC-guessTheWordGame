@@ -7,8 +7,9 @@ const span = document.querySelector(".remaining span"); //span inside paragraph
 const message = document.querySelector(".message"); //empty paragraph when user guesses a letter
 const playAgainButton = document.querySelector(".play-again"); //play again button 
 
-const word = "magnolia";
+let word = "magnolia";
 const guessedLetters = [];
+let remainingGuesses = 8;
 
 
 //Write a function to add placeholders for each letter ---> THIS FUNCTION is like setting up THE TABLE with empty card slots; you need placeholders (facedown cards) for each one 
@@ -16,13 +17,15 @@ const createPlaceholder = function (word) { //aka bascially laying out a set of 
     const placeholderSymbol = [];
 
     for (const letter of word) {
-        console.log(letter);
+        // console.log(letter);
         placeholderSymbol.push("●");
     }
     wordInProgress.innerText = placeholderSymbol.join("");
 };
 
+
 createPlaceholder(word);
+
 
 //Add an Event Listener for the Button
 guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAYER"S move; the player is saying "im ready" and clicks the button to submit their guess
@@ -54,18 +57,21 @@ const validateUserInput = function (guessInput) {
     }
 };
 
+
 //Create a function to capture input ---> THIS FUNCTION is a like the DEALER who manages the entire card game; takes your guess, checks if its valid, and then decided if it should be shown to the <updatePageWithUserGuesses>the DISPLAY BOARD
-const makeGuess = function (validationResult) {
-    validationResult = validationResult.toUpperCase();
-    if (guessedLetters.includes(validationResult)) { //check if the letter has aleady been guessed
+const makeGuess = function (captureInput) {
+    captureInput = captureInput.toUpperCase();
+    if (guessedLetters.includes(captureInput)) { //check if the letter has aleady been guessed
         message.innerText = "You've already guessed that letter. Try again."; //inform player they already guessed
     } else {
-        guessedLetters.push(validationResult); //add the new guessed letter to the guessedLetters array
+        guessedLetters.push(captureInput); //add the new guessed letter to the guessedLetters array
         console.log(guessedLetters);
+        countRemainingGuesses(captureInput);
         updatePageWithUserGuesses(); //THIS IS WHY ITS CALLED HERE; the dealer decides the guess is valid, the game updates the display with letters guess so far;
         replaceCircleSymbols(guessedLetters);
     }
 };
+
 
 //create a function to show the guessed letters ---> THIS FUNCTION is like the DISPLAY BOARD; it just shows the current state of the game
 const updatePageWithUserGuesses = function () { //update the list of guessed letters on the page 
@@ -77,7 +83,8 @@ const updatePageWithUserGuesses = function () { //update the list of guessed let
     }
 };
 
-//create a function to update the word in progress ---> THIS FUNCTION is the deck of cards; 
+
+//create a function to update the word in progress ---> THIS FUNCTION is the deck of cards being revealed over time; 
 const replaceCircleSymbols = function (guessedLetters) {
     const wordUpper = word.toUpperCase();
     const wordArray = wordUpper.split("");
@@ -94,7 +101,28 @@ const replaceCircleSymbols = function (guessedLetters) {
     checkIfUserWon();
 }
 
-//create a function to check if the player won
+
+//create a function to count guesses remaining
+const countRemainingGuesses = function (captureInput) {
+    const upperWord = word.toUpperCase();
+    if (!upperWord.includes(captureInput)) {
+        message.innerText = `Oh, so close! The word has no ${captureInput}.`;
+        remainingGuesses -= 1;
+    } else {
+        message.innerText = `You got one! The word has the letter ${captureInput}.`;
+    }
+    if (remainingGuesses === 0) {
+        message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+    } else if (remainingGuesses === 1) {
+        span.innerText = ` ${remainingGuesses} guess`;
+    } else {
+        span.innerText = `${remainingGuesses} guesses`;
+    }
+};
+
+
+
+//create a function to check if the player won ---> THIS FUNCTION is the endgame check to see if the player has won
 const checkIfUserWon = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
         //(wordInProgress === validateUserInput) { //THIS IS WORNG B/C ---its comparing references not values aka 
