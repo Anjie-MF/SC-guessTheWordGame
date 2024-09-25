@@ -11,6 +11,19 @@ let word = "magnolia";
 const guessedLetters = [];
 let remainingGuesses = 8;
 
+const getWord = async function () {
+    //this line fetches data from the url
+    const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+    //this line converts the responce to text
+    const words = await response.text();
+    const wordArray = words.split("\n");    //this line is delimiter to use to create the array
+    const randomIndex = Math.floor(Math.random() * wordArray.length);
+    word = wordArray[randomIndex].trim();
+    createPlaceholder(word);
+};
+
+getWord();
+
 
 //Write a function to add placeholders for each letter ---> THIS FUNCTION is like setting up THE TABLE with empty card slots; you need placeholders (facedown cards) for each one 
 const createPlaceholder = function (word) { //aka bascially laying out a set of blank spots to show each letter 
@@ -22,10 +35,6 @@ const createPlaceholder = function (word) { //aka bascially laying out a set of 
     }
     wordInProgress.innerText = placeholderSymbol.join("");
 };
-
-
-createPlaceholder(word);
-
 
 //Add an Event Listener for the Button
 guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAYER"S move; the player is saying "im ready" and clicks the button to submit their guess
@@ -99,7 +108,7 @@ const replaceCircleSymbols = function (guessedLetters) {
     // console.log(revealWord);
     wordInProgress.innerText = revealWord.join("");
     checkIfUserWon();
-}
+};
 
 
 //create a function to count guesses remaining
@@ -125,7 +134,6 @@ const countRemainingGuesses = function (captureInput) {
 //create a function to check if the player won ---> THIS FUNCTION is the endgame check to see if the player has won
 const checkIfUserWon = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
-        //(wordInProgress === validateUserInput) { //THIS IS WORNG B/C ---its comparing references not values aka 
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
