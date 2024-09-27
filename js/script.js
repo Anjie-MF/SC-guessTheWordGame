@@ -14,7 +14,7 @@ let remainingGuesses = 8;
 const getWord = async function () {
     //this line fetches data from the url
     const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
-    //this line converts the responce to text
+    //this line converts the response to text
     const words = await response.text();
     const wordArray = words.split("\n");    //this line is delimiter to use to create the array
     const randomIndex = Math.floor(Math.random() * wordArray.length);
@@ -105,7 +105,6 @@ const replaceCircleSymbols = function (guessedLetters) {
             revealWord.push("●");
         }
     }
-    // console.log(revealWord);
     wordInProgress.innerText = revealWord.join("");
     checkIfUserWon();
 };
@@ -130,11 +129,19 @@ const countRemainingGuesses = function (captureInput) {
 };
 
 
-
 //create a function to check if the player won ---> THIS FUNCTION is the endgame check to see if the player has won
 const checkIfUserWon = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        startOver();
     }
+};
+
+
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remaining.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
 };
