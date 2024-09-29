@@ -8,7 +8,7 @@ const message = document.querySelector(".message"); //empty paragraph when user 
 const playAgainButton = document.querySelector(".play-again"); //play again button 
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 const getWord = async function () {
@@ -30,7 +30,6 @@ const createPlaceholder = function (word) { //aka bascially laying out a set of 
     const placeholderSymbol = [];
 
     for (const letter of word) {
-        // console.log(letter);
         placeholderSymbol.push("●");
     }
     wordInProgress.innerText = placeholderSymbol.join("");
@@ -114,7 +113,7 @@ const replaceCircleSymbols = function (guessedLetters) {
 const countRemainingGuesses = function (captureInput) {
     const upperWord = word.toUpperCase();
     if (!upperWord.includes(captureInput)) {
-        message.innerText = `Oh, so close! The word has no ${captureInput}.`;
+        message.innerText = `Oooh! This word has no ${captureInput} in it, sorry!`;
         remainingGuesses -= 1;
     } else {
         message.innerText = `You got one! The word has the letter ${captureInput}.`;
@@ -139,9 +138,29 @@ const checkIfUserWon = function () {
 };
 
 
+//create a function to hide and show elements 
 const startOver = function () {
     guessButton.classList.add("hide");
     remaining.classList.add("hide");
     guessedLettersElement.classList.add("hide");
     playAgainButton.classList.remove("hide");
 };
+
+
+//add a click event to the play again button---AKA the reset functon
+playAgainButton.addEventListener("click", function () {
+    message.classList.remove("win");
+    guessedLetters = [];
+    remainingGuesses = 8;
+    span.innerText = `${remainingGuesses} guesses`;
+    guessedLettersElement.innerHTML = "";
+    message.innerText = "";
+
+    getWord();
+
+    //elements that are hidden/revealed correctly before the next UI(user interaction)
+    guessButton.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+    remaining.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+});
