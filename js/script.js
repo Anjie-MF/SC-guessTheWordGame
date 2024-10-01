@@ -1,4 +1,4 @@
-const guessedLettersElement = document.querySelector(".guessed-letters"); //ul list of user guessed letters
+const guessedLettersElement = document.querySelector(".guessed-letters");//ul list of user guessed letters
 const guessButton = document.querySelector(".guess"); //guess button 
 const guessInput = document.querySelector(".letter"); //text input for letters
 const wordInProgress = document.querySelector(".word-in-progress"); //empty paragraph for W-I-P
@@ -9,13 +9,11 @@ const playAgainButton = document.querySelector(".play-again"); //play again butt
 
 let word = "magnolia";
 let guessedLetters = [];
-let remainingGuesses = 8;
+let remainingGuesses = 10;
 
 const getWord = async function () {
-    //this line fetches data from the url
     const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
-    //this line converts the response to text
-    const words = await response.text();
+    const words = await response.text();    //this line converts the response to text
     const wordArray = words.split("\n");    //this line is delimiter to use to create the array
     const randomIndex = Math.floor(Math.random() * wordArray.length);
     word = wordArray[randomIndex].trim();
@@ -24,27 +22,23 @@ const getWord = async function () {
 
 getWord();
 
-
 //Write a function to add placeholders for each letter ---> THIS FUNCTION is like setting up THE TABLE with empty card slots; you need placeholders (facedown cards) for each one 
-const createPlaceholder = function (word) { //aka bascially laying out a set of blank spots to show each letter 
+const createPlaceholder = function (word) {
     const placeholderSymbol = [];
-
     for (const letter of word) {
+        console.log(letter);
         placeholderSymbol.push("●");
     }
     wordInProgress.innerText = placeholderSymbol.join("");
 };
 
-//Add an Event Listener for the Button
-guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAYER"S move; the player is saying "im ready" and clicks the button to submit their guess
+//Add an Event Listener for the Button --->THIS FUNCTION is the PLAYER"S move; the player is saying "im ready" and clicks the button to submit their guess
+guessButton.addEventListener("click", function (e) {
     e.preventDefault();
     message.innerText = ""; //empties message paragraph
-
     const captureInput = guessInput.value; // aka PLAYER hands over their guess to be inspected
-
     const validationResult = validateUserInput(captureInput); //aka <validateUserInput>CARD INSPECTOR checks it to ensure its valid
-
-    if (validationResult) { //CRUCIAL PART OF GAME--<makeGuess> THE DEALER if the guess is valid, steps in and decides whether to reveal the card or not
+    if (validationResult) { //aka <makeGuess> THE DEALER decides if the guess is valid, steps in and decides whether to reveal the card or not
         makeGuess(validationResult);
     }
     guessInput.value = "";
@@ -55,13 +49,13 @@ guessButton.addEventListener("click", function (e) { //THIS FUNCTION is the PLAY
 const validateUserInput = function (guessInput) {
     const acceptedLetter = /[a-zA-Z]/;
     if (guessInput.length === 0) {
-        message.innerText = "Please input a character."; //aka "Hey, you needs to play a card!"
+        message.innerText = "Please input a character.";
     } else if (guessInput.length > 1) {
-        message.innerText = "Please enter only one letter at a time."; //aka "You can only play one card at a time!"
+        message.innerText = "Please enter only one letter at a time.";
     } else if (!guessInput.match(acceptedLetter)) {
-        message.innerText = "Please enter alphabetical letters only."; //aka "You can only play valid cards!"
+        message.innerText = "Please enter alphabetical letters only.";
     } else {
-        return guessInput; //aka ---the cards are valid, you can show <makeGuess>THE DEALER
+        return guessInput;
     }
 };
 
@@ -70,7 +64,7 @@ const validateUserInput = function (guessInput) {
 const makeGuess = function (captureInput) {
     captureInput = captureInput.toUpperCase();
     if (guessedLetters.includes(captureInput)) { //check if the letter has aleady been guessed
-        message.innerText = "You've already guessed that letter. Try again."; //inform player they already guessed
+        message.innerText = "You've already guessed that letter. Try again.";
     } else {
         guessedLetters.push(captureInput); //add the new guessed letter to the guessedLetters array
         console.log(guessedLetters);
@@ -120,6 +114,7 @@ const countRemainingGuesses = function (captureInput) {
     }
     if (remainingGuesses === 0) {
         message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+        startOver();
     } else if (remainingGuesses === 1) {
         span.innerText = ` ${remainingGuesses} guess`;
     } else {
@@ -132,7 +127,7 @@ const countRemainingGuesses = function (captureInput) {
 const checkIfUserWon = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
         message.classList.add("win");
-        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>';
         startOver();
     }
 };
@@ -146,19 +141,17 @@ const startOver = function () {
     playAgainButton.classList.remove("hide");
 };
 
-
 //add a click event to the play again button---AKA the reset functon
 playAgainButton.addEventListener("click", function () {
     message.classList.remove("win");
     guessedLetters = [];
-    remainingGuesses = 8;
+    remainingGuesses = 10;
     span.innerText = `${remainingGuesses} guesses`;
     guessedLettersElement.innerHTML = "";
     message.innerText = "";
-
     getWord();
 
-    //elements that are hidden/revealed correctly before the next UI(user interaction)
+    //UI elements that are hidden/revealed correctly before the next UI
     guessButton.classList.remove("hide");
     playAgainButton.classList.add("hide");
     remaining.classList.remove("hide");
