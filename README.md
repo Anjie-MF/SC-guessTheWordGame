@@ -9,7 +9,7 @@ If the player guesses all the letters correctly before they use up their allotte
 - HTML
 - CSS
 - JavaScript
-- [API]()
+- [API](https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt)
 
 ## Skills Practiced:
 - querySelector()
